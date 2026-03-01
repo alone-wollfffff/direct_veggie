@@ -50,14 +50,14 @@ const OrderHistory = () => {
   const [editingOrder,  setEditingOrder]  = useState(null);  // id being edited
   const [editItems,     setEditItems]     = useState([]);    // working copy of items
   const [savingEdit,    setSavingEdit]    = useState(false);
-  const [ setTick]          = useState(0);     // force re-render for timer
+  const [, setTick] = useState(0);     // force re-render for timer
 
   // Countdown ticker
-  useEffect(() => {
-    const t = setInterval(() => setTick((v) => v + 1), 1000);
-    return () => clearInterval(t);
-  }, []);
-
+ useEffect(() => {
+  const t = setInterval(() => setTick((v) => v + 1), 1000);
+  return () => clearInterval(t);
+}, [setTick]);
+  
   useEffect(() => {
     if (!user) return;
     const unsubOrders = subscribeUserOrders(
