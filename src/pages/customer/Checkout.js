@@ -6,7 +6,7 @@ import { useCart } from "../../contexts/CartContext";
 import { useApp } from "../../contexts/AppContext";
 import { placeOrder } from "../../firebase/firestoreService";
 import AddressSelector from "../../components/customer/AddressSelector";
-import { validateCart, validateAddress, formatPrice } from "../../utils/validation";
+import { validateCart, validateAddress } from "../../utils/validation";
 import toast from "react-hot-toast";
 
 const Checkout = () => {
@@ -44,7 +44,7 @@ const Checkout = () => {
     setPlacing(true);
 
     try {
-      const orderId = await placeOrder(user.uid, {
+        await placeOrder(user.uid, {
         customerName:  profile?.name  || "",
         customerPhone: profile?.phone || user?.phoneNumber || user?.email || "",
         items:         cart.items,
