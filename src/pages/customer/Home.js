@@ -7,7 +7,7 @@ import { useCart } from "../../contexts/CartContext";
 import { subscribeUserOrders } from "../../firebase/firestoreService";
 import ProductCard from "../../components/customer/ProductCard";
 import RepeatOrderCard from "../../components/customer/RepeatOrderCard";
-import { LoadingSpinner, SkeletonCard } from "../../components/common/LoadingSpinner";
+import { SkeletonCard } from "../../components/common/LoadingSpinner";
 
 const Home = () => {
   const { user, profile, logout } = useAuth();
