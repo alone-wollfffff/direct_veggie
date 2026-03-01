@@ -100,7 +100,7 @@ const AdminDashboard = () => {
               )}
             </div>
             // <p className="text-brand-200 text-xs mt-0.5">{user?.email?.split("@")[0] || "Admin"}</p>
-            <p className="text-brand-200 text-xs mt-0.5">{user?.name || "Admin"}</p>
+            // <p className="text-brand-200 text-xs mt-0.5">{user?.name || "Admin"}</p>
           </div>
           <button onClick={logout}
             className="bg-white/20 text-white text-xs px-3 py-1.5 rounded-full font-semibold">
