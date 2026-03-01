@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helper functions ───────────────────────────────────────
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdminUID() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/adminUids/$(request.auth.uid));
+    }
+
+    function isMasterAdmin() {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/adminUids/$(request.auth.uid)).data.isMaster == true;
+    }
+
+    function isApprovedUser() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isApproved == true &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isBlocked != true;
+    }
+
+    // ── Products ───────────────────────────────────────────────
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update, delete: if isAdminUID();
+    }
+
+    // ── Buildings ──────────────────────────────────────────────
+    match /buildings/{buildingId} {
+      allow read: if true;
+      allow create, update, delete: if isAdminUID();
+    }
+
+    // ── Orders ────────────────────────────────────────────────
+    match /orders/{orderId} {
+      // Customer can read/create their own orders (if approved, not blocked)
+      allow read: if isAdminUID() || (isSignedIn() && resource.data.uid == request.auth.uid);
+      allow create: if isApprovedUser() && request.resource.data.uid == request.auth.uid;
+      // Customer can update only their own PENDING orders (edit window enforced by app)
+      allow update: if isAdminUID() ||
+        (isApprovedUser() && resource.data.uid == request.auth.uid && resource.data.status == "pending");
+      allow delete: if isAdminUID();
+    }
+
+    // ── Users ─────────────────────────────────────────────────
+    match /users/{userId} {
+      allow read: if isAdminUID() || (isSignedIn() && request.auth.uid == userId);
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if isAdminUID() || (isSignedIn() && request.auth.uid == userId);
+      allow delete: if isAdminUID();
+    }
+
+    // ── Admins collection ─────────────────────────────────────
+    match /admins/{phone} {
+      allow read: if isAdminUID();
+      allow write: if isMasterAdmin();
+    }
+
+    // ── Admin UIDs (fast lookup) ───────────────────────────────
+    match /adminUids/{uid} {
+      allow read: if isAdminUID();
+      allow write: if isMasterAdmin();
+    }
+
+    // ── App Settings ──────────────────────────────────────────
+    match /settings/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isMasterAdmin();
+    }
+  }
+}

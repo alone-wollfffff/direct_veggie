@@ -1,0 +1,53 @@
+{
+  "id": "/",
+  "short_name": "VeggieDirect",
+  "name": "Veggie Direct – Fresh from Farm",
+  "description": "Order fresh vegetables directly from your local vendor. Zero hassle, delivered to your door.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "logo192-maskable.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "logo512-maskable.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "theme_color": "#16a34a",
+  "background_color": "#f0fdf4",
+  "orientation": "portrait-primary",
+  "categories": ["food", "shopping", "lifestyle"],
+  "lang": "en-IN",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}

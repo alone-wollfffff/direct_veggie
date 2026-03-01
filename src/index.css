@@ -1,0 +1,39 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Global resets & typography ─────────────────────────── */
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-body text-gray-900 bg-gray-50;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── Scrollbar hide utility ───────────────────────────────── */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .safe-top    { padding-top:    env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+}
+
+/* ── PWA safe area adjustments ───────────────────────────── */
+.fixed-safe-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
