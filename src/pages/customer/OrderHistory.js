@@ -10,7 +10,7 @@ import {
   updateOrderItems,
   subscribeSettings,
 } from "../../firebase/firestoreService";
-import { formatDate, formatPrice } from "../../utils/validation";
+import { formatDate } from "../../utils/validation";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import toast from "react-hot-toast";
 
@@ -50,7 +50,7 @@ const OrderHistory = () => {
   const [editingOrder,  setEditingOrder]  = useState(null);  // id being edited
   const [editItems,     setEditItems]     = useState([]);    // working copy of items
   const [savingEdit,    setSavingEdit]    = useState(false);
-  const [tick,          setTick]          = useState(0);     // force re-render for timer
+  const [ setTick]          = useState(0);     // force re-render for timer
 
   // Countdown ticker
   useEffect(() => {
