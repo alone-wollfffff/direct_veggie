@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { subscribeAllOrders, subscribeAllUsers } from "../../firebase/firestoreService";
+import { subscribeAllOrders, subscribeAllUsers, checkAdminByUid, checkAdminPhone } from "../../firebase/firestoreService";
 import { formatDate } from "../../utils/validation";
 
 const STATUS_CONFIG = {
@@ -20,6 +20,20 @@ const AdminDashboard = () => {
   const [orders,        setOrders]        = useState([]);
   const [users,         setUsers]         = useState([]);
   const [ordersLoading, setOrdersLoading] = useState(true);
+  const [adminInfo, setAdminInfo] = useState({ name: "", phone: "" });
+
+  useEffect(() => {
+  if (!user?.uid) return;
+  checkAdminByUid(user.uid).then((res) => {
+    if (res.phone) {
+      checkAdminPhone(res.phone).then((admin) => {
+        if (admin.adminDoc) {
+          setAdminInfo({ name: admin.adminDoc.name || "", phone: res.phone });
+        }
+      });
+    }
+  });
+}, [user]);
 
   useEffect(() => {
     const unsubOrders = subscribeAllOrders(
@@ -94,13 +108,12 @@ const AdminDashboard = () => {
         <div className="flex items-center justify-between mb-1">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-white font-display font-black text-2xl">Admin Panel 🥬</h1>
+              <h1 className="text-white font-display font-black text-2xl">{adminInfo.name || "Admin"} 🥬</h1>
               {isMasterAdmin && (
                 <span className="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full">👑 Master</span>
               )}
             </div>
-            
-            <p className="text-brand-200 text-xs mt-0.5">{user?.name || "Admin"}</p>
+             <p className="text-brand-200 text-xs mt-0.5">{adminInfo.phone || "Admin"}</p>
           </div>
           <button onClick={logout}
             className="bg-white/20 text-white text-xs px-3 py-1.5 rounded-full font-semibold">
